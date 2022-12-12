@@ -1,0 +1,5 @@
+{
+    "name": "whoami",
+    "db":"mongodb://localhost/whoami_db",
+    "jwtPrivateKey": "productMod"
+}

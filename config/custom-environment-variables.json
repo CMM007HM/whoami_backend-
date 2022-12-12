@@ -1,0 +1,5 @@
+{
+    "name": "whoami",
+    "jwtPrivateKey": "whoami_jwtPrivateKey",
+    "db":"whoami_db"
+}
