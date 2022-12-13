@@ -21,8 +21,7 @@ router.get("/", auth, async (req, res)=> {
             password.category.name = category[0].name;
             allpasswords.push(password);
         } 
-            //return res.send([{message:"Sorry, you don't have any passwords matching the category", status: true}]);
-        // console.log(category[0]);
+       
     }));
 
     res.send(allpasswords);
@@ -31,8 +30,6 @@ router.get("/", auth, async (req, res)=> {
 
 // Get single password by ID
 router.get("/:id", auth, async (req, res) =>{
-        // if(typeof(req.params.id) !== number) return res.status(403).send([{message:"Category cannot be "}]);
-    //63507a35f4be846a512482c2
     if(!ObjectId.isValid(req.params.id) )return res.status(403).send([{message:"password ID is invalid "}]);
     const password = await Password.findById(req.params.id).select("-__v");
     if(!password) return res.status(404).send("Could not find password with the given ID");
@@ -98,7 +95,18 @@ router.delete("/:id", auth, async (req, res) => {
     if(!password) return res.status(404).send("Could not find password with the given ID");
     res.send(password);
 });
-
+router.post("/delete", auth, async (req, res) => {
+    console.log(req.body.passwords.length);
+    if(!req.body.passwords.length > 0) return res.status(404).send({message: "Password body cannot be empty", status: false});
+    // console.log(res.body);
+    const passwords = req.body.passwords;
+    passwords.map( async(password) => {
+        await Password.findByIdAndRemove(password);
+    })
+    // const password = await password.findByIdAndRemove(req.params.id).select("-__v");
+    // if(!password) return res.status(404).send("Could not find password with the given ID");
+    res.status(200).send({message: "Operation was successful!", status: true});
+});
 
 
 module.exports = router;
